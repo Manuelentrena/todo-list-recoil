@@ -1,20 +1,17 @@
-import { useComplete } from "@/hooks/useComplete";
 import { useTodo } from "@/hooks/useTodo";
 import { Todo } from "@/types/interface";
 
-export default function TodoItem({ title, id }: Todo) {
-  const { isComplete, toggleComplete } = useComplete({ id });
-  const { deleteTodo } = useTodo();
+export default function TodoItem({ title, id, active }: Todo) {
+  const { deleteTodo, toggleTodo } = useTodo();
+
+  const onChange = () => toggleTodo(id);
+  const onDelete = () => deleteTodo(id);
 
   return (
     <div>
       <h2>{title}</h2>
-      <div>
-        <button onClick={toggleComplete}>
-          {isComplete ? "Not complete" : "Complete"}
-        </button>
-        <button onClick={() => deleteTodo(id)}>Delete</button>
-      </div>
+      <input type="checkbox" onChange={onChange} checked={active} />
+      <button onClick={onDelete}>Delete</button>
     </div>
   );
 }
