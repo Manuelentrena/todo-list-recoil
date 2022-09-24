@@ -1,15 +1,10 @@
-import { todoAtom, todoAtomFamily } from "@/context/todo-state";
+import { useComplete } from "@/hooks/useComplete";
+import { useTodo } from "@/hooks/useTodo";
 import { Todo } from "@/types/interface";
-import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function TodoItem({ title, id }: Todo) {
-  const [isComplete, setIsComplete] = useRecoilState(todoAtomFamily(id));
-  const setTodos = useSetRecoilState(todoAtom);
-
-  const toggleComplete = () => setIsComplete((prevState) => !prevState);
-
-  const deleteTodo = () =>
-    setTodos((todos) => todos.filter((todo) => todo.id !== id));
+  const { isComplete, toggleComplete } = useComplete({ id });
+  const { deleteTodo } = useTodo();
 
   return (
     <div>
@@ -18,7 +13,7 @@ export default function TodoItem({ title, id }: Todo) {
         <button onClick={toggleComplete}>
           {isComplete ? "Not complete" : "Complete"}
         </button>
-        <button onClick={deleteTodo}>Delete</button>
+        <button onClick={() => deleteTodo(id)}>Delete</button>
       </div>
     </div>
   );

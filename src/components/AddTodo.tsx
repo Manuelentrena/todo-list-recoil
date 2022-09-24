@@ -1,28 +1,31 @@
-import { todoAtom } from "@/context/todo-state";
 import { Todo } from "@/types/interface";
-import { nanoid } from "nanoid";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { initialTodo } from "@/constants/initialTodo";
+import { useTodo } from "@/hooks/useTodo";
 
 export default function AddTodo() {
-  const [content, setContent] = useState<Omit<Todo, "id">>({
-    title: "",
-  });
+  const { addTodo } = useTodo();
+  const [content, setContent] = useState<Omit<Todo, "id">>(initialTodo);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setContent((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const setTodos = useSetRecoilState(todoAtom);
-
-  const addTodo = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e:  FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setTodos((todos) => [...todos, { ...content, id: nanoid() }]);
+    addTodo(content);
+    setContent(initialTodo);
   };
 
   return (
-    <form onSubmit={addTodo}>
-      <input onChange={onChange} value={content.title} id="title" required />
+    <form onSubmit={onSubmit}>
+      <input
+        onChange={onChange}
+        value={content.title}
+        id="title"
+        required
+        autoFocus
+      />
       <button type="submit" disabled={!content.title}>
         Add Todo
       </button>
