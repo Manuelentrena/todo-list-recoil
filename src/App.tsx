@@ -1,12 +1,11 @@
-import TodoList from "@/components/TodoList";
-import AddTodo from "./components/AddTodo";
+import TodoTable from "@/components/TodoTable";
 
 function App() {
   return (
-      <div className="App">
-        <AddTodo />
-        <TodoList />
-      </div>
+    <div className="App">
+      <h1>🧡 TODO-RECOIL 🧡</h1>
+      <TodoTable />
+    </div>
   );
 }
 

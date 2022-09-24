@@ -1,7 +1,7 @@
-import { Todo } from "@/types/interface";
-import { ChangeEvent, FormEvent, useState } from "react";
 import { initialTodo } from "@/constants/initialTodo";
 import { useTodo } from "@/hooks/useTodo";
+import { Todo } from "@/types/interface";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function AddTodo() {
   const { addTodo } = useTodo();
@@ -11,7 +11,7 @@ export default function AddTodo() {
     setContent((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const onSubmit = (e:  FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addTodo(content);
     setContent(initialTodo);
@@ -26,9 +26,7 @@ export default function AddTodo() {
         required
         autoFocus
       />
-      <button type="submit" disabled={!content.title}>
-        Add Todo
-      </button>
+      <input type="hidden" />
     </form>
   );
 }
