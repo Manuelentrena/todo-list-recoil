@@ -1,10 +1,14 @@
-import TodoTable from "@/components/TodoTable";
+import { TodoTable, Footer, Header } from "@/components";
+import { useRecoilValue } from "recoil";
+import { todoAtom } from "@/context/todo-state";
 
 function App() {
+  const todoList = useRecoilValue(todoAtom);
   return (
-    <div className="App">
-      <h1>🧡 TODO-RECOIL 🧡</h1>
-      <TodoTable />
+    <div className="todoapp">
+      <h1>todos</h1>
+      <TodoTable todoList={todoList} />
+      {todoList.length > 0 && <Footer todoList={todoList} />}
     </div>
   );
 }

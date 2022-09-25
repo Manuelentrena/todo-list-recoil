@@ -1,39 +1,21 @@
-import { todoAtom } from "@/context/todo-state";
-import { useCreateTable } from "@/hooks/useCreateTable";
-import { useTodo } from "@/hooks/useTodo";
-import { useRecoilValue } from "recoil";
+import { useCreateTable, useTodo } from "@/hooks";
+import { Todo } from "@/types/interface";
 
-export default function TodoTable() {
-  const todoList = useRecoilValue(todoAtom);
-  const {
-    toggleTodo,
-    allToggleTodo,
-    markTodo,
-    editableTodo,
-    notEditableTodo,
-    editTitleTodo,
-  } = useTodo();
-  const { tableInstance } = useCreateTable(
-    todoList,
-    toggleTodo,
-    allToggleTodo,
-    markTodo,
-    editableTodo,
-    notEditableTodo,
-    editTitleTodo,
-  );
+export function TodoTable({ todoList }: { todoList: Todo[] }) {
+  const actionsTodo = useTodo();
+  const { tableInstance } = useCreateTable(todoList, actionsTodo);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
   return (
     <div>
-      <table {...getTableProps()}>
+      <table {...getTableProps()} style={{ margin: 0, width: "100%" }}>
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
               <tr {...headerGroup.getFooterGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
+                  <th {...column.getHeaderProps()} className="checkboxAll">
                     {column.render("Header")}
                   </th>
                 ))}

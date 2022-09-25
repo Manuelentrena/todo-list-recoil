@@ -1,30 +1,27 @@
-import AddTodo from "@/components/AddTodo";
-import { Todo } from "@/types/interface";
-import { useMemo, useState } from "react";
+import { AddTodo, TodoCellTitle } from "@/components";
+import { ActionsTodo, Todo } from "@/types/interface";
+import { useMemo } from "react";
 import { Column, useTable } from "react-table";
 
-export function useCreateTable(
-  todoList: Todo[],
-  toggleTodo: (id: string) => void,
-  allToggleTodo: boolean,
-  markTodo: () => void,
-  editableTodo: (id: string) => void,
-  notEditableTodo: (id: string) => void,
-  editTitleTodo: (id: string, title: string) => void,
-) {
-  const [newValue, setnewValue] = useState(false);
+export function useCreateTable(todoList: Todo[], actionsTodo: ActionsTodo) {
   const columns = useMemo<Column<Todo>[]>(
     () => [
       {
-        Header: () => (
-          <input
-            type="checkbox"
-            checked={allToggleTodo}
-            onChange={() => {
-              markTodo();
-            }}
-          />
-        ),
+        Header: () => {
+          if (todoList.length > 0) {
+            return (
+              <input
+                type="checkbox"
+                checked={actionsTodo.allToggleTodo}
+                onChange={() => {
+                  actionsTodo.markTodo();
+                }}
+              />
+            );
+          } else {
+            return null;
+          }
+        },
         accessor: "active",
         Cell: ({ value, row }) => {
           const id = row.original.id;
@@ -32,7 +29,7 @@ export function useCreateTable(
             <input
               type="checkbox"
               checked={value}
-              onChange={() => toggleTodo(id)}
+              onChange={() => actionsTodo.toggleTodo(id)}
             />
           );
         },
@@ -40,25 +37,20 @@ export function useCreateTable(
       {
         Header: <AddTodo />,
         accessor: "title",
-        Cell: ({ value, row }) =>
-          row.original.editable ? (
-            <input
-              onChange={(e) => editTitleTodo(row.original.id, e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  notEditableTodo(row.original.id);
-                }
-              }}
-              value={value}
-            />
-          ) : (
-            <span onDoubleClick={() => editableTodo(row.original.id)}>
-              {value}
-            </span>
-          ),
+        Cell: ({ value, row }) => (
+          <TodoCellTitle
+            key={row.original.id}
+            value={value}
+            row={row}
+            editTitleTodo={actionsTodo.editTitleTodo}
+            notEditableTodo={actionsTodo.notEditableTodo}
+            editableTodo={actionsTodo.editableTodo}
+            deleteTodo={actionsTodo.deleteTodo}
+          />
+        ),
       },
     ],
-    [allToggleTodo]
+    [actionsTodo.allToggleTodo]
   );
   const tableInstance = useTable({ columns, data: todoList });
 

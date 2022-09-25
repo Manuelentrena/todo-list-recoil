@@ -1,7 +1,7 @@
-import { useTodo } from "@/hooks/useTodo";
+import { useTodo } from "@/hooks";
 import { Todo } from "@/types/interface";
 
-export default function TodoItem({ title, id, active }: Todo) {
+export function TodoItem({ title, id, active }: Todo) {
   const { deleteTodo, toggleTodo } = useTodo();
 
   const onChange = () => toggleTodo(id);

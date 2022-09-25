@@ -6,11 +6,17 @@ import { useRecoilState } from "recoil";
 export function useTodo() {
   const [todos, setTodos] = useRecoilState<Todo[]>(todoAtom);
 
-  const addTodo = (newTodo: { title: string; active: boolean; editable: boolean }) =>
-    setTodos((todos) => [...todos, { ...newTodo, id: nanoid() }]);
+  const addTodo = (newTodo: {
+    title: string;
+    active: boolean;
+    editable: boolean;
+  }) => setTodos((todos) => [...todos, { ...newTodo, id: nanoid() }]);
 
   const deleteTodo = (id: string) =>
     setTodos((todos) => todos.filter((todo) => todo.id !== id));
+
+  const AllDeleteActiveTodo = () =>
+    setTodos((todos) => todos.filter((todo) => todo.active !== true));
 
   const toggleTodo = (id: string) =>
     setTodos((todos) =>
@@ -26,6 +32,18 @@ export function useTodo() {
     }
     return prev;
   }, true);
+
+  const noneActiveTodo: boolean = todos.every((todo) => {
+    return todo.active === false
+  });
+
+  const counterActiveTodo: number = todos.reduce((prev, todo) => {
+    if (!todo.active) {
+      return prev + 1;
+    } else {
+      return prev;
+    }
+  }, 0);
 
   const markTodo = () => {
     setTodos((todos) =>
@@ -57,11 +75,14 @@ export function useTodo() {
   return {
     addTodo,
     deleteTodo,
+    AllDeleteActiveTodo,
     toggleTodo,
     allToggleTodo,
     markTodo,
     editableTodo,
     notEditableTodo,
     editTitleTodo,
+    counterActiveTodo,
+    noneActiveTodo,
   };
 }

@@ -1,19 +1,20 @@
 import { initialTodo } from "@/constants/initialTodo";
-import { useTodo } from "@/hooks/useTodo";
+import { useTodo } from "@/hooks";
 import { Todo } from "@/types/interface";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-export default function AddTodo() {
+export function AddTodo() {
   const { addTodo } = useTodo();
   const [content, setContent] = useState<Omit<Todo, "id">>(initialTodo);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setContent((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    const withoutSpaces = e.target.value.trimStart();
+    setContent((prev) => ({ ...prev, [e.target.id]: withoutSpaces }));
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addTodo(content);
+    addTodo({ ...content, title: content.title.trimEnd() });
     setContent(initialTodo);
   };
 
@@ -25,6 +26,7 @@ export default function AddTodo() {
         id="title"
         required
         autoFocus
+        /* style={{"width": "95%", "border": 0}} */
       />
       <input type="hidden" />
     </form>
