@@ -26,7 +26,6 @@ export function AddTodo() {
         id="title"
         required
         autoFocus
-        /* style={{"width": "95%", "border": 0}} */
       />
       <input type="hidden" />
     </form>

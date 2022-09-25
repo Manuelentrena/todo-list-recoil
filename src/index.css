@@ -147,3 +147,24 @@ form {
 .visible {
   visibility: visible;
 }
+
+.routes{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.routes a{
+  margin-right: 10px;
+  text-decoration: none;
+  border: 1px solid grey;
+  padding: 3px;
+  border-radius: 5px;
+  z-index: 1;
+  display: block;
+}
+
+.active{
+  background-color: dodgerblue;
+  color: white;
+}

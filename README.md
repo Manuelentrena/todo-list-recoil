@@ -20,7 +20,7 @@
 
 # 10. boton que borra todas las tareas completadas de golpe, no se muestra si no hay ninguna # completada ✔
 
-# 11. Usar una libreria global, añadir localstorage
+# 11. Usar una libreria global, añadir localstorage ✔
 
 # 12. añade estas rutas, con los botones de abajo, hacen de filtro
 
